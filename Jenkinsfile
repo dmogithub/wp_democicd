@@ -25,7 +25,7 @@ node {
         }
     }
 
-    stage('Push image') {
+    stage('Push image to registry') {
         /* Finally, we'll push the image with two tags:
          * First, the incremental build number from Jenkins
          * Second, the 'latest' tag.
@@ -35,16 +35,16 @@ node {
             app.push("latest")
         }
     }
-    stage('wpapp dev env') {
+    stage('Deploy to DEV') {
         /* Ideally, we would run a test framework against our image.
          * For this example, we're using a Volkswagen-type approach ;-) */
             
             sh 'docker stack deploy --with-registry-auth  -c docker-compose-dev.yml devapp'
         }
-    stage('Deploy approval'){
+    stage('Approval for PROD deployment'){
     input "Deploy to prod?"
     }
-        stage('wpapp prod env')  {
+        stage('Deploy to PROD')  {
         /* Ideally, we would run a test framework against our image.
          * For this example, we're using a Volkswagen-type approach ;-) */
                
